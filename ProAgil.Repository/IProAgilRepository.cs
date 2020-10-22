@@ -61,7 +61,7 @@ namespace ProAgil.Repository
         /// Método para listagem de palestrantes por nome.
         /// </summary>
         /// <returns>Lista de palestrantes por nome.</returns>
-        Task<Evento[]> GetAllPalestranteAsyncByName(string name, bool includeEventos);
+        Task<Palestrante[]> GetAllPalestranteAsyncByName(string name, bool includeEventos);
 
         /// <summary>
         /// Método para pesquisar palestrante por id.
@@ -69,7 +69,7 @@ namespace ProAgil.Repository
         /// <param name="PalestranteId">Parâmetro de pesquisa do palestrante</param>
         /// <param name="includePalestrantes">Parâmetro de adição de palestrantes.</param>
         /// <returns>Registro de palestrante por id.</returns>
-        Task<Evento> GetPalestranteAsyncById(int PalestranteId, bool includePalestrantes);        
+        Task<Palestrante> GetPalestranteAsyncById(int PalestranteId, bool includeEventos);        
 
     }
 }
