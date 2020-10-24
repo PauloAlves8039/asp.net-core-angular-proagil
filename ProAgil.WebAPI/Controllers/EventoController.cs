@@ -27,9 +27,9 @@ namespace ProAgil.WebAPI.Controllers
                 var results = await _repo.GetAllEventoAsync(true);
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao pesquisar registros: " + ex.Message);
             } 
         }
 
@@ -41,9 +41,9 @@ namespace ProAgil.WebAPI.Controllers
                 var results = await _repo.GetEventoAsyncById(EventoId, true);
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao pesquisar registro: " + ex.Message);
             } 
         }
 
@@ -55,9 +55,9 @@ namespace ProAgil.WebAPI.Controllers
                 var results = await _repo.GetAllEventoAsyncByTema(tema, true);
                 return Ok(results);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao pesquisar registro: " + ex.Message);
             } 
         }
 
@@ -73,9 +73,9 @@ namespace ProAgil.WebAPI.Controllers
                     return Created($"/api/evento/{model.Id}", model);
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir registro: " + ex.Message);
             }
 
             return  BadRequest();
@@ -96,9 +96,9 @@ namespace ProAgil.WebAPI.Controllers
                     return Created($"/api/evento/{model.Id}", model);
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar registro: " + ex.Message);
             }
 
             return  BadRequest();
@@ -119,9 +119,9 @@ namespace ProAgil.WebAPI.Controllers
                     return Ok();
                 }
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Banco de dados falhou!");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao excluir registro: " + ex.Message);
             }
 
             return  BadRequest();
