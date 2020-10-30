@@ -9,6 +9,9 @@ import { Lote } from './Lote';
 import { RedeSocial } from './RedeSocial';
 import { Palestrante } from './Palestrante';
 
+/**
+ * Interface para declaração das propriedades da entidade Evento.
+ */
 export interface Evento {
     id: number;
     local: string;

@@ -1,7 +1,7 @@
 /**
  * @file eventos.component.ts
  * @author: Paulo Alves
- * @description: responsável pela atribuição das propriedades da entidade Evento.
+ * @description: responsável pela atribuição das propriedades e funcionalidades referentes a entidade Evento.
  * @version 1.0.1 (14/10/2020)
  */
 
@@ -9,6 +9,9 @@ import { Component, OnInit } from '@angular/core';
 import { Evento } from '../_models/Evento';
 import { EventoService } from './../_services/evento.service';
 
+/**
+ * Classe responsável por atribuir propriedades e funções relacionadas a entidade Evento.
+ */
 @Component({
   selector: 'app-eventos',
   templateUrl: './eventos.component.html',
@@ -40,6 +43,11 @@ export class EventosComponent implements OnInit {
     this.getEventos();
   }
 
+  /**
+   * Função para filtragem de eventos.
+   *
+   * @param filtrarPor parâmetro de filtragem do evento.
+   */
   filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
@@ -48,14 +56,14 @@ export class EventosComponent implements OnInit {
   }
 
   /**
-   * Função para exibir imagem.
+   * Função para exibir imagens.
    */
   alternarImagem(): void {
     this.mostrarImagem = !this.mostrarImagem;
   }
 
   /**
-   * Função responsável por listar todos os eventos.
+   * Função para listar todos os eventos.
    */
   getEventos(): void {
     this.eventoService.getAllEvento().subscribe(

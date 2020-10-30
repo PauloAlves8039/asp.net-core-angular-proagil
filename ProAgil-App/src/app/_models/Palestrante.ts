@@ -8,6 +8,9 @@
 import { RedeSocial } from './RedeSocial';
 import { Evento } from './Evento';
 
+/**
+ * Interface para declaração das propriedades da entidade Palestrante.
+ */
 export interface Palestrante {
     id: number;
     nome: string;

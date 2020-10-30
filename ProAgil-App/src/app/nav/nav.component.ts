@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * Classe para a atribuição do compoente Nav.
+ */
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
