@@ -9,6 +9,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '../_models/Evento';
 import { EventoService } from './../_services/evento.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 /**
  * Classe responsável por atribuir propriedades e funções relacionadas a entidade Evento.
@@ -26,6 +27,7 @@ export class EventosComponent implements OnInit {
   imagemMargem = 2;
   mostrarImagem = false;
   modalRef: BsModalRef;
+  registerForm: FormGroup;
 
   // tslint:disable-next-line: variable-name
   _filtroLista = '';
@@ -53,6 +55,7 @@ export class EventosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.validation();
     this.getEventos();
   }
 
@@ -73,6 +76,32 @@ export class EventosComponent implements OnInit {
    */
   alternarImagem(): void {
     this.mostrarImagem = !this.mostrarImagem;
+  }
+
+  /**
+   * Função para validação dos campos do formulário.
+   */
+  validation(): void {
+    this.registerForm = new FormGroup({
+      tema: new FormControl('',
+        [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
+      local: new FormControl('', Validators.required),
+      dataEvento: new FormControl('', Validators.required),
+      imagemURL: new FormControl('', Validators.required),
+      qtdPessoas: new FormControl('',
+        [Validators.required, Validators.max(120000)]),
+      telefone: new FormControl('', Validators.required),
+      email: new FormControl('',
+        [Validators.required, Validators.email])
+    });
+  }
+
+  /**
+   * Função para salvar alterações do Evento.
+   *
+   */
+  salvarAlteracao() {
+
   }
 
   /**
