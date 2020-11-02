@@ -27,12 +27,12 @@ defineLocale('pt-br', ptBrLocale);
 export class EventosComponent implements OnInit {
   eventosFiltrados: Evento[];
   eventos: Evento[];
+  evento: Evento;
   imagemLargura = 50;
   imagemMargem = 2;
   mostrarImagem = false;
   registerForm: FormGroup;
 
-  // tslint:disable-next-line: variable-name
   _filtroLista = '';
 
   constructor(
@@ -60,6 +60,7 @@ export class EventosComponent implements OnInit {
    * @param template parâmetro de referência de template do modal.
    */
   openModal(template: any) {
+    this.registerForm.reset();
     template.show();
   }
 
@@ -105,8 +106,22 @@ export class EventosComponent implements OnInit {
   /**
    * Função para salvar alterações do Evento.
    *
+   * @param template parâmentro referente ao template do formulário de Evento.
    */
-  salvarAlteracao() {}
+  salvarAlteracao(template: any) {
+    if (this.registerForm.valid){
+      this.evento = Object.assign({}, this.registerForm.value);
+      this.eventoService.postEvento(this.evento).subscribe(
+        (novoEvento: Evento) => {
+          console.log(novoEvento);
+          template.hide();
+          this.getEventos();
+        }, error => {
+          console.log(error);
+        }
+      );
+    }
+  }
 
   /**
    * Função para listar todos os eventos.
