@@ -9,7 +9,12 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Evento } from '../_models/Evento';
 import { EventoService } from './../_services/evento.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { ptBrLocale } from 'ngx-bootstrap/locale';
+
+defineLocale('pt-br', ptBrLocale);
 
 /**
  * Classe responsável por atribuir propriedades e funções relacionadas a entidade Evento.
@@ -20,7 +25,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./eventos.component.css'],
 })
 export class EventosComponent implements OnInit {
-
   eventosFiltrados: Evento[];
   eventos: Evento[];
   imagemLargura = 50;
@@ -34,8 +38,12 @@ export class EventosComponent implements OnInit {
 
   constructor(
     private eventoService: EventoService,
-    private modalService: BsModalService
-  ) {}
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private localService: BsLocaleService
+  ) {
+    this.localService.use('pt-br');
+  }
 
   get filtroLista(): string {
     return this._filtroLista;
@@ -43,7 +51,9 @@ export class EventosComponent implements OnInit {
 
   set filtroLista(value: string) {
     this._filtroLista = value;
-    this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
+    this.eventosFiltrados = this.filtroLista
+      ? this.filtrarEventos(this.filtroLista)
+      : this.eventos;
   }
 
   /**
@@ -67,7 +77,7 @@ export class EventosComponent implements OnInit {
   filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
-      evento => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+      (evento) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
     );
   }
 
@@ -82,17 +92,14 @@ export class EventosComponent implements OnInit {
    * Função para validação dos campos do formulário.
    */
   validation(): void {
-    this.registerForm = new FormGroup({
-      tema: new FormControl('',
-        [Validators.required, Validators.minLength(4), Validators.maxLength(50)]),
-      local: new FormControl('', Validators.required),
-      dataEvento: new FormControl('', Validators.required),
-      imagemURL: new FormControl('', Validators.required),
-      qtdPessoas: new FormControl('',
-        [Validators.required, Validators.max(120000)]),
-      telefone: new FormControl('', Validators.required),
-      email: new FormControl('',
-        [Validators.required, Validators.email])
+    this.registerForm = this.fb.group({
+      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      local: ['', Validators.required],
+      dataEvento: ['', Validators.required],
+      imagemURL: ['', Validators.required],
+      qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
+      telefone: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -100,9 +107,7 @@ export class EventosComponent implements OnInit {
    * Função para salvar alterações do Evento.
    *
    */
-  salvarAlteracao() {
-
-  }
+  salvarAlteracao() {}
 
   /**
    * Função para listar todos os eventos.
