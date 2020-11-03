@@ -27,7 +27,10 @@ defineLocale('pt-br', ptBrLocale);
 export class EventosComponent implements OnInit {
   eventosFiltrados: Evento[];
   eventos: Evento[];
+
   evento: Evento;
+  modoSalvar = 'post';
+
   imagemLargura = 50;
   imagemMargem = 2;
   mostrarImagem = false;
@@ -56,10 +59,32 @@ export class EventosComponent implements OnInit {
   }
 
   /**
+   * Função para editar Evento.
+   *
+   * @param evento parâmetro para recebimento do Evento.
+   * @param template parâmetro para recebimento do template.
+   */
+  editarEvento(evento: Evento, template: any): void {
+    this.modoSalvar = 'put';
+    this.openModal(template);
+    this.evento = evento;
+    this.registerForm.patchValue(evento);
+  }
+
+  /**
+   * Função para adicionar nono Evento.
+   * @param template parâmetro para recebimento do template.
+   */
+  novoEvento(template: any): void {
+    this.modoSalvar = 'post';
+    this.openModal(template);
+  }
+
+  /**
    * Função para abrir modal.
    * @param template parâmetro de referência de template do modal.
    */
-  openModal(template: any) {
+  openModal(template: any): void {
     this.registerForm.reset();
     template.show();
   }
@@ -93,7 +118,14 @@ export class EventosComponent implements OnInit {
    */
   validation(): void {
     this.registerForm = this.fb.group({
-      tema: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
+      tema: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(50),
+        ],
+      ],
       local: ['', Validators.required],
       dataEvento: ['', Validators.required],
       imagemURL: ['', Validators.required],
@@ -108,18 +140,32 @@ export class EventosComponent implements OnInit {
    *
    * @param template parâmentro referente ao template do formulário de Evento.
    */
-  salvarAlteracao(template: any) {
-    if (this.registerForm.valid){
-      this.evento = Object.assign({}, this.registerForm.value);
-      this.eventoService.postEvento(this.evento).subscribe(
-        (novoEvento: Evento) => {
-          console.log(novoEvento);
-          template.hide();
-          this.getEventos();
-        }, error => {
-          console.log(error);
-        }
-      );
+  salvarAlteracao(template: any): void {
+    if (this.registerForm.valid) {
+      if (this.modoSalvar === 'post') {
+        this.evento = Object.assign({}, this.registerForm.value);
+        this.eventoService.postEvento(this.evento).subscribe(
+          (novoEvento: Evento) => {
+            template.hide();
+            this.getEventos();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
+      else {
+        this.evento = Object.assign({id: this.evento.id}, this.registerForm.value);
+        this.eventoService.putEvento(this.evento).subscribe(
+          () => {
+            template.hide();
+            this.getEventos();
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     }
   }
 
