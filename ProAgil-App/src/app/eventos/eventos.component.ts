@@ -35,6 +35,7 @@ export class EventosComponent implements OnInit {
   imagemMargem = 2;
   mostrarImagem = false;
   registerForm: FormGroup;
+  bodyDeletarEvento = '';
 
   _filtroLista = '';
 
@@ -81,6 +82,29 @@ export class EventosComponent implements OnInit {
   }
 
   /**
+   * Função para excluir Evento.
+   *
+   * @param evento parâmetro para recebimento do Evento.
+   * @param template parâmetro para recebimento do template.
+   */
+  excluirEvento(evento: Evento, template: any): void {
+    this.openModal(template);
+    this.evento = evento;
+    this.bodyDeletarEvento = `Tem certeza que deseja excluir o Evento: ${evento.tema}, Código: ${evento.id}`;
+  }
+
+  confirmeDelete(template: any): void {
+    this.eventoService.deleteEvento(this.evento.id).subscribe(
+      () => {
+        template.hide();
+        this.getEventos();
+      }, error => {
+        console.log(error);
+      }
+      );
+  }
+
+  /**
    * Função para abrir modal.
    * @param template parâmetro de referência de template do modal.
    */
@@ -102,7 +126,7 @@ export class EventosComponent implements OnInit {
   filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
-      (evento) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
+      evento => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1
     );
   }
 
