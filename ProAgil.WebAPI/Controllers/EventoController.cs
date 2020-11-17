@@ -31,7 +31,7 @@ namespace ProAgil.WebAPI.Controllers
             {
                 var eventos = await _repo.GetAllEventoAsync(true);
 
-                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+                var results = _mapper.Map<EventoDto[]>(eventos);
 
                 return Ok(results);
             }
@@ -46,7 +46,10 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetEventoAsyncById(EventoId, true);
+                var evento = await _repo.GetEventoAsyncById(EventoId, true);
+                
+                var results = _mapper.Map<EventoDto>(evento);
+
                 return Ok(results);
             }
             catch (System.Exception ex)
@@ -60,9 +63,9 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var evento = await _repo.GetAllEventoAsyncByTema(tema, true);
+                var eventos = await _repo.GetAllEventoAsyncByTema(tema, true);
 
-                var results = _mapper.Map<EventoDto>(evento);
+                var results = _mapper.Map<EventoDto[]>(eventos);
 
                 return Ok(results);
             }
@@ -73,11 +76,13 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(EventoDto model)
         {
             try
             {
-                _repo.Add(model);
+                var evento = _mapper.Map<Evento>(model);
+
+                _repo.Add(evento);
 
                 if (await _repo.SaveChangesAsync())
                 {
@@ -86,7 +91,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir registro: " + ex.Message);
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao inserir registro: {ex.Message}");
             }
 
             return BadRequest();
