@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProAgil.Domain;
 using ProAgil.Repository;
+using ProAgil.WebAPI.Dtos;
 
 namespace ProAgil.WebAPI.Controllers
 {
@@ -14,8 +17,10 @@ namespace ProAgil.WebAPI.Controllers
     public class EventoController : ControllerBase
     {
         public readonly IProAgilRepository _repo;
-        public EventoController(IProAgilRepository repo)
+        public readonly IMapper _mapper;
+        public EventoController(IProAgilRepository repo, IMapper mapper)
         {
+            _mapper = mapper;
             _repo = repo;
         }
 
@@ -24,13 +29,16 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetAllEventoAsync(true);
+                var eventos = await _repo.GetAllEventoAsync(true);
+
+                var results = _mapper.Map<IEnumerable<EventoDto>>(eventos);
+
                 return Ok(results);
             }
             catch (System.Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao pesquisar registros: " + ex.Message);
-            } 
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao pesquisar registros: {ex.Message}");
+            }
         }
 
         [HttpGet("{EventoId}")]
@@ -44,7 +52,7 @@ namespace ProAgil.WebAPI.Controllers
             catch (System.Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao pesquisar registro: " + ex.Message);
-            } 
+            }
         }
 
         [HttpGet("getByTema/{tema}")]
@@ -52,13 +60,16 @@ namespace ProAgil.WebAPI.Controllers
         {
             try
             {
-                var results = await _repo.GetAllEventoAsyncByTema(tema, true);
+                var evento = await _repo.GetAllEventoAsyncByTema(tema, true);
+
+                var results = _mapper.Map<EventoDto>(evento);
+
                 return Ok(results);
             }
             catch (System.Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao pesquisar registro: " + ex.Message);
-            } 
+            }
         }
 
         [HttpPost]
@@ -68,7 +79,7 @@ namespace ProAgil.WebAPI.Controllers
             {
                 _repo.Add(model);
 
-                if (await _repo.SaveChangesAsync()) 
+                if (await _repo.SaveChangesAsync())
                 {
                     return Created($"/api/evento/{model.Id}", model);
                 }
@@ -78,7 +89,7 @@ namespace ProAgil.WebAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao inserir registro: " + ex.Message);
             }
 
-            return  BadRequest();
+            return BadRequest();
         }
 
         [HttpPut("{EventoId}")]
@@ -88,10 +99,10 @@ namespace ProAgil.WebAPI.Controllers
             {
                 var evento = await _repo.GetEventoAsyncById(EventoId, false);
                 if (evento == null) return NotFound();
-                
+
                 _repo.Update(model);
 
-                if (await _repo.SaveChangesAsync()) 
+                if (await _repo.SaveChangesAsync())
                 {
                     return Created($"/api/evento/{model.Id}", model);
                 }
@@ -101,7 +112,7 @@ namespace ProAgil.WebAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar registro: " + ex.Message);
             }
 
-            return  BadRequest();
+            return BadRequest();
         }
 
         [HttpDelete("{EventoId}")]
@@ -111,10 +122,10 @@ namespace ProAgil.WebAPI.Controllers
             {
                 var evento = await _repo.GetEventoAsyncById(EventoId, false);
                 if (evento == null) return NotFound();
-                
+
                 _repo.Delete(evento);
 
-                if (await _repo.SaveChangesAsync()) 
+                if (await _repo.SaveChangesAsync())
                 {
                     return Ok();
                 }
@@ -124,7 +135,7 @@ namespace ProAgil.WebAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro ao excluir registro: " + ex.Message);
             }
 
-            return  BadRequest();
+            return BadRequest();
         }
 
     }
