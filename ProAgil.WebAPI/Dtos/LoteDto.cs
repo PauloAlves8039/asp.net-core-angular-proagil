@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProAgil.WebAPI.Dtos
@@ -8,14 +9,14 @@ namespace ProAgil.WebAPI.Dtos
     public class LoteDto
     {
         public int Id { get; set; }
-        
-        [Required (ErrorMessage="O Campo {0} é Obrigatório!")]
+
+        [Required(ErrorMessage = "O Campo {0} é Obrigatório!")]
         public string Nome { get; set; }
 
-        [Required (ErrorMessage="O Campo {0} é Obrigatório!")]
+        [Required(ErrorMessage = "O Campo {0} é Obrigatório!")]
         public decimal Preco { get; set; }
-        public string DataInicio { get; set; }
-        public string DataFim { get; set; }
+        public DateTime DataInicio { get; set; }
+        public DateTime DataFim { get; set; }
 
         [Range(5, 120000)]
         public int quantidade { get; set; }
