@@ -13,12 +13,14 @@ namespace ProAgil.WebAPI.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<Evento, EventoDto>()
-                .ForMember(dest => dest.Palestrantes, opt => {
+                .ForMember(dest => dest.Palestrantes, opt =>
+                {
                     opt.MapFrom(src => src.PalestranteEventos.Select(x => x.Palestrante).ToList());
                 }).ReverseMap();
 
             CreateMap<Palestrante, PalestranteDto>()
-                .ForMember(dest => dest.Eventos, opt => {
+                .ForMember(dest => dest.Eventos, opt =>
+                {
                     opt.MapFrom(src => src.PalestranteEventos.Select(x => x.Evento).ToList());
                 }).ReverseMap();
 
@@ -26,4 +28,4 @@ namespace ProAgil.WebAPI.Helpers
             CreateMap<RedeSocial, RedeSocialDto>().ReverseMap();
         }
     }
-} 
+}
