@@ -1,0 +1,16 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
+namespace ProAgil.Domain.Identity
+{
+    /// <summary>
+    /// Classe responsável pelas configurações do usuario na implementação do Identity.
+    /// </summary>
+    public class User : IdentityUser<int>
+    {
+        [Column(TypeName = "nvarchar(150)")]
+        public string FullName { get; set; }
+        public List<UserRole> UserRoles { get; set; }
+    }
+}
