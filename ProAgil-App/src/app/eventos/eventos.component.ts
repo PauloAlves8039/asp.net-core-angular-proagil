@@ -43,6 +43,8 @@ export class EventosComponent implements OnInit {
   file: File;
 
   _filtroLista = '';
+  fileNameToupdate: string;
+  dataAtual: string;
 
   constructor(
     private eventoService: EventoService,
@@ -74,6 +76,7 @@ export class EventosComponent implements OnInit {
     this.modoSalvar = 'put';
     this.openModal(template);
     this.evento = Object.assign({}, evento);
+    this.fileNameToupdate = evento.imagemURL.toString();
     this.evento.imagemURL = '';
     this.registerForm.patchValue(this.evento);
   }
@@ -183,9 +186,23 @@ export class EventosComponent implements OnInit {
    * Função para carregar imagem.
    */
   uploadImagem() {
-    const nomeArquivo = this.evento.imagemURL.split('\\', 3);
-    this.evento.imagemURL = nomeArquivo[2];
-    this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe();
+    if (this.modoSalvar === 'post') {
+      const nomeArquivo = this.evento.imagemURL.split('\\', 3);
+      this.evento.imagemURL = nomeArquivo[2];
+
+      this.eventoService.postUpload(this.file, nomeArquivo[2]).subscribe(() => {
+        this.dataAtual = new Date().getMilliseconds().toString();
+        this.getEventos();
+      });
+    } else {
+      this.evento.imagemURL = this.fileNameToupdate;
+      this.eventoService
+        .postUpload(this.file, this.fileNameToupdate)
+        .subscribe(() => {
+          this.dataAtual = new Date().getMilliseconds().toString();
+          this.getEventos();
+        });
+    }
   }
 
   /**
