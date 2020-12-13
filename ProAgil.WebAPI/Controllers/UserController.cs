@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ProAgil.Domain.Identity;
 using ProAgil.WebAPI.Dtos;
@@ -57,6 +58,42 @@ namespace ProAgil.WebAPI.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de dados falhou: {ex.Message}");
             }
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(UserLoginDto userLogin)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(userLogin.UserName);
+                var result = await _signInManager.CheckPasswordSignInAsync(user, userLogin.Password, false);
+
+                if (result.Succeeded)
+                {
+                    var appUser = await _userManager.Users
+                        .FirstOrDefaultAsync(u => u.NormalizedUserName == userLogin.UserName.ToUpper());
+
+                    var userToReturn = _mapper.Map<UserLoginDto>(appUser);
+
+                    return Ok(new
+                    {
+                        token = GenerateJWToken(appUser).Result,
+                        user = userToReturn
+                    }
+                    );
+                }
+
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de dados falhou: {ex.Message}");
+            }
+        }
+
+        private async Task<string> GenerateJWToken(User user)
+        {
+            return "";
         }
     }
 }
