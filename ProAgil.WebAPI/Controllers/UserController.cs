@@ -37,9 +37,10 @@ namespace ProAgil.WebAPI.Controllers
         }
 
         [HttpGet("GetUser")]
-        public async Task<IActionResult> GetUser(UserDto userDto)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetUser()
         {
-            return Ok(userDto);
+            return Ok(new UserDto());
         }
 
         [HttpPost("Register")]
@@ -61,7 +62,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de dados falhou: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao registrar usuário: {ex.Message}");
             }
         }
 
@@ -93,7 +94,7 @@ namespace ProAgil.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco de dados falhou: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Banco ao logar: {ex.Message}");
             }
         }
 
