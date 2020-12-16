@@ -21,6 +21,7 @@ namespace ProAgil.WebAPI.Controllers
     /// Controlador responsável pelas ações de autenticação do usuário.
     /// </summary>
     [Route("api/[controller]")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IConfiguration _config;
