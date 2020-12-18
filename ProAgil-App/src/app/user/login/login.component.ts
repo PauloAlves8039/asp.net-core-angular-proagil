@@ -1,3 +1,10 @@
+/**
+ * @file login.component.ts
+ * @author: Paulo Alves
+ * @description: responsável pela atribuição das propriedades e funcionalidades referentes ao login do usuário.
+ * @version 1.0.1 (16/12/2020)
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
