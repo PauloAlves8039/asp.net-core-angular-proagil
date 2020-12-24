@@ -1,6 +1,7 @@
+import { AuthInterceptor } from './auth/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -56,7 +57,10 @@ import { RegistrationComponent } from './user/registration/registration.componen
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [EventoService],
+  providers: [
+    EventoService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
