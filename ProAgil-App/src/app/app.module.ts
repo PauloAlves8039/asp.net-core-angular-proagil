@@ -9,6 +9,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { EventoService } from './_services/evento.service';
 
@@ -25,6 +27,7 @@ import { TituloComponent } from './_shared/titulo/titulo.component';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './user/login/login.component';
 import { RegistrationComponent } from './user/registration/registration.component';
+import { EventoEditComponent } from './eventos/evento-edit/evento-edit.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,7 @@ import { RegistrationComponent } from './user/registration/registration.componen
     UserComponent,
     LoginComponent,
     RegistrationComponent,
+    EventoEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,8 @@ import { RegistrationComponent } from './user/registration/registration.componen
     BsDatepickerModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    TabsModule.forRoot(),
+    NgxMaskModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
