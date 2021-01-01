@@ -93,6 +93,14 @@ export class EventoEditComponent implements OnInit {
     });
   }
 
+  removerLote(id: number) {
+    this.lotes.removeAt(id);
+  }
+
+  removerRedeSocial(id: number) {
+    this.redesSociais.removeAt(id);
+  }
+
   onFileChange(file: FileList) {
     const reader = new FileReader();
     reader.onload = (event: any) => (this.imagemURL = event.target.result);
