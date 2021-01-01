@@ -135,7 +135,7 @@
         </tab>
         <tab heading="Redes Sociais">
           <div formArrayName="redesSociais" *ngFor="let lote of redesSociais.controls; let i=index">
-            <fieldset [formGroupName]="i" class="form-group">
+            <fieldset [formGroupName]="j" class="form-group">
               <legend class="d-flex justify-content-between capitalize">
                 {{ redesSociais.get(j+'.nome').value == '' ?
                     'Redes Sociais' :
@@ -180,7 +180,8 @@
       <div class="row">
         <div class="col-md-12 d-flex justify-content-end">
           <!-- {{registerForm.value | json}} -->
-          <button [disabled]="!registerForm.valid" class="btn btn-success my-2" >Salvar
+          <button [disabled]="!registerForm.valid" class="btn btn-success my-2"
+            (click)="salvarEvento()">Salvar
             Alterações</button>
         </div>
       </div>

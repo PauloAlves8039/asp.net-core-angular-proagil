@@ -249,6 +249,7 @@ export class EventosComponent implements OnInit {
    * Função para listar todos os eventos.
    */
   getEventos(): void {
+    this.dataAtual = new Date().getMilliseconds().toString();
     this.eventoService.getAllEvento().subscribe(
       (_eventos: Evento[]) => {
         this.eventos = _eventos;
