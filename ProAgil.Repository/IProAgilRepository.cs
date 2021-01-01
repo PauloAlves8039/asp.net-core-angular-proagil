@@ -19,13 +19,19 @@ namespace ProAgil.Repository
         /// Método para atualizar registro.
         /// </summary>
         /// <typeparam name="T">Recebe o tipo da entidade.</typeparam>
-        void Update<T>(T entity) where T: class;
+        void Update<T>(T entity) where T : class;
 
         /// <summary>
         /// Método para exlcuir registro.
         /// </summary>
         /// <typeparam name="T">Recebe o tipo da entidade.</typeparam>
-        void Delete<T>(T entity) where T: class;
+        void Delete<T>(T entity) where T : class;
+
+        /// <summary>
+        /// Método para exlcuir coleção de registro.
+        /// </summary>
+        /// <typeparam name="T">Recebe o tipo da entidade</typeparam>
+        void DeleteRange<T>(T[] entity) where T : class;
 
         /// <summary>
         /// Método para salvar registros
@@ -69,7 +75,7 @@ namespace ProAgil.Repository
         /// <param name="PalestranteId">Parâmetro de pesquisa do palestrante</param>
         /// <param name="includePalestrantes">Parâmetro de adição de palestrantes.</param>
         /// <returns>Registro de palestrante por id.</returns>
-        Task<Palestrante> GetPalestranteAsyncById(int PalestranteId, bool includeEventos);        
+        Task<Palestrante> GetPalestranteAsyncById(int PalestranteId, bool includeEventos);
 
     }
 }
