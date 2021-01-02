@@ -11,6 +11,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 import { EventoService } from './_services/evento.service';
 
@@ -58,6 +59,7 @@ import { EventoEditComponent } from './eventos/evento-edit/evento-edit.component
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     NgxMaskModule.forRoot(),
+    NgxCurrencyModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
