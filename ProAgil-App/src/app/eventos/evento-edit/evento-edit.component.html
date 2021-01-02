@@ -37,7 +37,7 @@
             <div class="form-group col-md-4">
               <label>Data e Hora</label>
               <input type="text" class="form-control" [(ngModel)]="evento.dataEvento" bsDatepicker
-                value="{{dataEvento | DateTimeFormatPipe}}" [(ngModel)]="dataEvento"
+                value="{{evento.dataEvento | DateTimeFormatPipe}}" [(ngModel)]="evento.dataEvento"
                 [bsConfig]="{ dateInputFormat : 'DD/MM/YYYY hh:mm' }" [ngClass]="{'is-invalid': registerForm.get('dataEvento').errors
             && registerForm.get('dataEvento').touched}" formControlName="dataEvento" placeholder="">
               <div *ngIf="registerForm.get('dataEvento').hasError('required')
@@ -134,7 +134,7 @@
           </div>
         </tab>
         <tab heading="Redes Sociais">
-          <div formArrayName="redesSociais" *ngFor="let lote of redesSociais.controls; let i=index">
+          <div formArrayName="redesSociais" *ngFor="let lote of redesSociais.controls; let j=index">
             <fieldset [formGroupName]="j" class="form-group">
               <legend class="d-flex justify-content-between capitalize">
                 {{ redesSociais.get(j+'.nome').value == '' ?
@@ -172,7 +172,7 @@
               </div>
             </fieldset>
           </div>
-          <button class="btn btn-outline-primary">
+          <button (click)="adicionarRedeSocial()" class="btn btn-outline-primary">
             Adicionar Rede Social
           </button>
         </tab>
@@ -189,7 +189,7 @@
     <div class="col-md-4">
       <div class="form-row">
         <div class="form-group col-md-9">
-          <input type="file" #file (change)="onFileChange($event)" class="form-control is-invalid"
+          <input type="file" #file (change)="onFileChange($event, $event.target.files)" class="form-control is-invalid"
             formControlName="imagemURL" placeholder="" style="display: none">
         </div>
       </div>

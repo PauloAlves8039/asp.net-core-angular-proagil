@@ -26,7 +26,7 @@ export class EventoEditComponent implements OnInit {
   imagemURL = 'assets/img/upload.png';
   registerForm: FormGroup;
   file: File;
-  fileNameToupdate: string;
+  fileNameToUpdate: string;
   dataAtual = '';
 
   get lotes(): FormArray {
@@ -55,15 +55,17 @@ export class EventoEditComponent implements OnInit {
   carregarEvento() {
     const idEvento = +this.router.snapshot.paramMap.get('id');
     this.eventoService.getEventoById(idEvento).subscribe((evento: Evento) => {
-      this.fileNameToupdate = evento.imagemURL.toString();
+      this.evento = Object.assign({}, evento);
+      this.fileNameToUpdate = evento.imagemURL.toString();
+
       this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imagemURL}?_ts=${this.dataAtual}`;
+
       this.evento.imagemURL = '';
       this.registerForm.patchValue(this.evento);
 
       this.evento.lotes.forEach((lote) => {
         this.lotes.push(this.criaLote(lote));
       });
-
       this.evento.redesSociais.forEach((redeSocial) => {
         this.redesSociais.push(this.criaRedeSocial(redeSocial));
       });
@@ -127,10 +129,10 @@ export class EventoEditComponent implements OnInit {
     this.redesSociais.removeAt(id);
   }
 
-  onFileChange(file: FileList) {
+  onFileChange(evento: any, file: FileList) {
     const reader = new FileReader();
     reader.onload = (event: any) => (this.imagemURL = event.target.result);
-    this.file = event.target.files;
+    this.file = evento.target.files;
     reader.readAsDataURL(file[0]);
   }
 
@@ -139,14 +141,17 @@ export class EventoEditComponent implements OnInit {
       { id: this.evento.id },
       this.registerForm.value
     );
-    this.evento.imagemURL = this.fileNameToupdate;
+    this.evento.imagemURL = this.fileNameToUpdate;
+
     this.uploadImagem();
+
     this.eventoService.putEvento(this.evento).subscribe(
       () => {
         this.toastr.success('Editado com Sucesso!');
       },
       (error) => {
-        this.toastr.error(`Erro ao tentar editar: ${error}`);
+        this.toastr.error(`Erro ao Editar: ${error}`);
+        console.log(error);
       }
     );
   }
@@ -154,7 +159,7 @@ export class EventoEditComponent implements OnInit {
   uploadImagem() {
     if (this.registerForm.get('imagemURL').value !== '') {
       this.eventoService
-        .postUpload(this.file, this.fileNameToupdate)
+        .postUpload(this.file, this.fileNameToUpdate)
         .subscribe(() => {
           this.dataAtual = new Date().getMilliseconds().toString();
           this.imagemURL = `http://localhost:5000/resources/images/${this.evento.imagemURL}?_ts=${this.dataAtual}`;
