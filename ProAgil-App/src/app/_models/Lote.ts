@@ -5,15 +5,15 @@
  * @version 1.0.1 (27/10/2020)
  */
 
- /**
-  * Interface para declaração das propriedades da entidade Lote.
-  */
+/**
+ * Interface para declaração das propriedades da entidade Lote.
+ */
 export interface Lote {
-    id: number;
-    nome: string;
-    preco: number;
-    dataInicio: Date;
-    dataFim: Date;
-    quantidade: number;
-    eventoId: number;
+  id: number;
+  nome: string;
+  preco: number;
+  dataInicio: Date;
+  dataFim: Date;
+  quantidade: number;
+  eventoId: number;
 }
